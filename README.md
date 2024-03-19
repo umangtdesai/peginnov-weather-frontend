@@ -5,8 +5,9 @@ Consultants need a way to search for weather data of multiple cities, this appli
 
 ### Core Capabilities:
 - Search for and find your right city
-- Search for one or more cities' weather in one go
+- Search for one or more cities' weather in one go for a given date (defaulted to current)
 - View raw API response
+- Download the data as a csv file
 - Sort and filter on any attribute in the table
 - Work with sensible defaults and intuitve UI
 
