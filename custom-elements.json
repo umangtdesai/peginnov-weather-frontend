@@ -1,0 +1,690 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "src/clients.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "createWeatherData",
+          "return": {
+            "type": {
+              "text": "Promise<WeatherInfo[]>"
+            }
+          },
+          "parameters": [
+            {
+              "name": "cityIds",
+              "type": {
+                "text": "number[]"
+              }
+            },
+            {
+              "name": "timestamp",
+              "optional": true,
+              "type": {
+                "text": "Date"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "fetchWeatherData",
+          "return": {
+            "type": {
+              "text": "Promise<WeatherInfo[]>"
+            }
+          }
+        },
+        {
+          "kind": "function",
+          "name": "searchCity",
+          "return": {
+            "type": {
+              "text": "Promise<City[]>"
+            }
+          },
+          "parameters": [
+            {
+              "name": "city",
+              "type": {
+                "text": "string"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "createCity",
+          "return": {
+            "type": {
+              "text": "Promise<CityId>"
+            }
+          },
+          "parameters": [
+            {
+              "name": "city",
+              "type": {
+                "text": "City"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "createWeatherData",
+          "declaration": {
+            "name": "createWeatherData",
+            "module": "src/clients.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "fetchWeatherData",
+          "declaration": {
+            "name": "fetchWeatherData",
+            "module": "src/clients.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "searchCity",
+          "declaration": {
+            "name": "searchCity",
+            "module": "src/clients.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "createCity",
+          "declaration": {
+            "name": "createCity",
+            "module": "src/clients.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/models.ts",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/peginnov-app.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "PeginnovApp",
+          "members": [
+            {
+              "kind": "field",
+              "name": "weatherInfo",
+              "type": {
+                "text": "WeatherInfo[]"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "formOpen",
+              "type": {
+                "text": "boolean"
+              },
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "true"
+            },
+            {
+              "kind": "field",
+              "name": "navBar",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "dataTable",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "searchWeatherForm",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "loadingSpinner",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "handleNavigationClicked",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handeFindWeatherClicked",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleFormSubmit",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "CustomEvent"
+                  }
+                }
+              ]
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./components/navigation"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./components/form"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "*",
+          "declaration": {
+            "name": "*",
+            "package": "./components/table"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "PeginnovApp",
+          "declaration": {
+            "name": "PeginnovApp",
+            "module": "src/peginnov-app.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/utils.ts",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "formatDateTime",
+          "return": {
+            "type": {
+              "text": "string"
+            }
+          },
+          "parameters": [
+            {
+              "name": "date",
+              "type": {
+                "text": "Date"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "kelvinToFahrenheit",
+          "return": {
+            "type": {
+              "text": "number"
+            }
+          },
+          "parameters": [
+            {
+              "name": "temp",
+              "type": {
+                "text": "number"
+              }
+            }
+          ]
+        },
+        {
+          "kind": "function",
+          "name": "downloadWeatherInfo",
+          "parameters": [
+            {
+              "name": "weatherInfo",
+              "type": {
+                "text": "WeatherInfo[]"
+              }
+            }
+          ]
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "formatDateTime",
+          "declaration": {
+            "name": "formatDateTime",
+            "module": "src/utils.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "kelvinToFahrenheit",
+          "declaration": {
+            "name": "kelvinToFahrenheit",
+            "module": "src/utils.ts"
+          }
+        },
+        {
+          "kind": "js",
+          "name": "downloadWeatherInfo",
+          "declaration": {
+            "name": "downloadWeatherInfo",
+            "module": "src/utils.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/form.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Form",
+          "members": [
+            {
+              "kind": "field",
+              "name": "citySearchOptions",
+              "type": {
+                "text": "City[]"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "selectedCities",
+              "type": {
+                "text": "City[]"
+              },
+              "default": "[]"
+            },
+            {
+              "kind": "field",
+              "name": "loading",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "searched",
+              "type": {
+                "text": "boolean"
+              },
+              "privacy": "private",
+              "default": "false"
+            },
+            {
+              "kind": "field",
+              "name": "formFlow",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "cityForm",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "noSearchResults",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "renderCityOptions",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "selectedCitiesList",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "timeFilterAndSubmit",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "loadingSpinner",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "cityDisplayString",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "city",
+                  "type": {
+                    "text": "City"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "selectCity",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "city",
+                  "type": {
+                    "text": "City"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "removeCity",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "city",
+                  "type": {
+                    "text": "City"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onCitySubmit",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSubmit",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "event",
+                  "type": {
+                    "text": "Event"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "formSubmitted",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit-element"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Form",
+          "declaration": {
+            "name": "Form",
+            "module": "src/components/form.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/navigation.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Navigation",
+          "members": [
+            {
+              "kind": "field",
+              "name": "activeTab",
+              "type": {
+                "text": "string"
+              },
+              "default": "'Dashboard'"
+            },
+            {
+              "kind": "field",
+              "name": "navOptions",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "navLogo",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "activeClass",
+              "privacy": "private",
+              "return": {
+                "type": {
+                  "text": "string"
+                }
+              },
+              "parameters": [
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "onSelect",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "option",
+                  "type": {
+                    "text": "string"
+                  }
+                }
+              ]
+            }
+          ],
+          "events": [
+            {
+              "name": "navigationClicked",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Navigation",
+          "declaration": {
+            "name": "Navigation",
+            "module": "src/components/navigation.ts"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "src/components/table.ts",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "Table",
+          "members": [
+            {
+              "kind": "field",
+              "name": "weatherInfo",
+              "type": {
+                "text": "WeatherInfo[]"
+              }
+            },
+            {
+              "kind": "field",
+              "name": "noContent",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "toolBar",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "downloadCsvOption",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "tableHead",
+              "privacy": "private"
+            },
+            {
+              "kind": "field",
+              "name": "tableBody",
+              "privacy": "private"
+            },
+            {
+              "kind": "method",
+              "name": "weatherMainDetails",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "WeatherInfo"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "showRawApiResponse",
+              "privacy": "private",
+              "parameters": [
+                {
+                  "name": "item",
+                  "type": {
+                    "text": "WeatherInfo"
+                  }
+                }
+              ]
+            },
+            {
+              "kind": "method",
+              "name": "handleDownload"
+            },
+            {
+              "kind": "method",
+              "name": "findWeatherClick"
+            }
+          ],
+          "events": [
+            {
+              "name": "findWeatherClicked",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "superclass": {
+            "name": "LitElement",
+            "package": "lit"
+          },
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "Table",
+          "declaration": {
+            "name": "Table",
+            "module": "src/components/table.ts"
+          }
+        }
+      ]
+    }
+  ]
+}
