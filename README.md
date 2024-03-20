@@ -1,11 +1,11 @@
 
-## PEG Brain: Weather FrontEnd
+## PEG Brain: Dynamic Weather FrontEnd
 
-Consultants need a way to search for weather data of multiple cities, this application provides capabilities to do that in a quick and easy way.
+Consultants need a way to search for weather data of multiple cities, this application provides capabilities to do that in a quick and easy way. 
 
 ### Core Capabilities:
 - Search for and find your right city
-- Search for one or more cities' weather in one go for a given date (defaulted to current)
+- Search for one or more cities' weather in one go and get 3 days worth of historical data.
 - View raw API response
 - Download the data as a csv file
 - Sort and filter on any attribute in the table
