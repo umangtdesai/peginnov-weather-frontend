@@ -1,6 +1,6 @@
 import { css, customElement, html, LitElement } from 'lit-element';
 import { City } from '../models';
-import { createCity, createWeatherData, searchCity } from '../clients';
+import { createCity, searchCity } from '../clients';
 import { property } from 'lit/decorators.js';
 import { nothing } from 'lit';
 
@@ -21,8 +21,6 @@ export class Form extends LitElement {
 
   @property({ type: Array }) selectedCities: City[] = [];
 
-  @property({ type: Boolean }) private loading: boolean = false;
-
   @property({ type: Boolean }) private searched: boolean = false;
 
   static styles = css`
@@ -39,7 +37,8 @@ export class Form extends LitElement {
       margin-bottom: 20px;
     }
 
-    label, h4 {
+    label,
+    h4 {
       display: block;
       margin-bottom: 5px;
       font-weight: bold;
@@ -85,26 +84,15 @@ export class Form extends LitElement {
       font-size: 18px;
       font-weight: bold;
     }
-
-    .loader {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
   `;
 
   render() {
-    return html` ${this.formFlow} ${this.loadingSpinner}`;
+    return html` ${this.formFlow}`;
   }
 
   private get formFlow() {
-    if (this.loading) {
-      return nothing;
-    }
-
     return html`
       ${this.cityForm} ${this.renderCityOptions} ${this.selectedCitiesList}
-      ${this.timeFilterAndSubmit}
     `;
   }
 
@@ -120,7 +108,7 @@ export class Form extends LitElement {
           required
         />
 
-        <button type="submit" @click=${this.onCitySubmit}>Search</button>
+        <button type="submit" @click=${this.onCitySearchSubmit}>Search</button>
       </form>
       ${this.noSearchResults}
     `;
@@ -140,7 +128,7 @@ export class Form extends LitElement {
       return nothing;
     }
 
-    // show users city details to differentiate Cities
+    // show users city details to differentiate cities
     return html`
       <ul>
         ${this.citySearchOptions.map(
@@ -172,45 +160,14 @@ export class Form extends LitElement {
           `
         )}
       </ul>
+      ${this.searchWeatherButton}
     `;
   }
 
-  private get timeFilterAndSubmit() {
-    if (this.selectedCities.length === 0) {
-      return nothing;
-    }
-
-    // Note: OpenWeather restrictions for onecall
-    const minDate = new Date('1979-01-01').toISOString().split('T')[0];
-    const maxDate = new Date();
-    maxDate.setDate(maxDate.getDate() + 4);
-    const formattedMaxDate = maxDate.toISOString().split('T')[0];
-
-    // FUTURE: Could have a "end time" to get on a range of weather data
-    return html`
-      <form class="weather-search">
-        <label for="timestamp">Weather At</label>
-        <p> Leave unselected for current weather </p>
-        <input
-          type="date"
-          id="timestamp"
-          name="timestamp"
-          min="${minDate}"
-          max="${formattedMaxDate}"
-        />
-        <button type="submit" @click=${this.onSubmit}>Search Weather</button>
-      </form>
-    `;
-  }
-
-  private get loadingSpinner() {
-    if (!this.loading) {
-      return nothing;
-    }
-
-    return html` <div class="loader">
-      <cds-loading></cds-loading>
-    </div>`;
+  private get searchWeatherButton() {
+    return html`<button type="submit" @click=${this.onSubmit}>
+      Search Weather
+    </button>`;
   }
 
   private cityDisplayString(city: City) {
@@ -228,9 +185,7 @@ export class Form extends LitElement {
       return;
     }
 
-    const cityIdDict = await createCity(city);
-    const cityToAppend = { ...city, id: cityIdDict.id };
-    this.selectedCities = [...this.selectedCities, cityToAppend];
+    this.selectedCities = [...this.selectedCities, city];
   }
 
   private removeCity(city: City) {
@@ -239,7 +194,7 @@ export class Form extends LitElement {
     );
   }
 
-  private async onCitySubmit(event: Event) {
+  private async onCitySearchSubmit(event: Event) {
     event.preventDefault();
     const form = this.shadowRoot?.querySelector(
       '.city-search'
@@ -252,24 +207,7 @@ export class Form extends LitElement {
   }
 
   private async onSubmit(event: Event) {
-    event.preventDefault();
-    const form = this.shadowRoot?.querySelector(
-      '.weather-search'
-    ) as HTMLFormElement;
-    const formData = new FormData(form);
-
-    const cityIds = this.selectedCities.map(city => city.id as number);
-    const weatherAtTimestamp = formData.get('timestamp');
-    this.loading = true;
-
-    if (weatherAtTimestamp === '') {
-      await createWeatherData(cityIds);
-      this.loading = false;
-    } else {
-      const date = new Date(weatherAtTimestamp as string);
-      await createWeatherData(cityIds, date);
-      this.loading = false;
-    }
+    await Promise.all(this.selectedCities.map(city => createCity(city)));
 
     this.dispatchEvent(
       new CustomEvent('formSubmitted', {

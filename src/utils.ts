@@ -1,8 +1,10 @@
 import { WeatherInfo } from './models';
 
-// IDEA: Humanize date and time more
 export const formatDateTime = (date: Date): string => {
-  return date.toLocaleString().slice(0, 19).replace('T', ' ');
+  const utcDate = new Date(date);
+  // FUTURE: use timezone offset from API response
+  const localTime = new Date(utcDate.getTime() - utcDate.getTimezoneOffset()); // adjust for local timezone offset
+  return localTime.toLocaleString();
 };
 
 // IDEA: Open to toggle view between Fahrenheit and Celsius
@@ -13,6 +15,7 @@ export const kelvinToFahrenheit = (temp: number): number => {
 export const downloadWeatherInfo = (weatherInfo: WeatherInfo[]) => {
   const headers = [
     'Weather At',
+    'Your Local Time',
     'City',
     'Country',
     'Lattitude',
