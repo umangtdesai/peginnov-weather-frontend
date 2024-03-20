@@ -1,4 +1,4 @@
-import { LitElement, html, css, nothing } from 'lit';
+import { LitElement, html, css, nothing, PropertyValueMap } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { WeatherInfo } from '../models';
 import {
@@ -8,11 +8,11 @@ import {
 } from '../utils';
 
 /*
- * fires: @findWeatherClicked
+ * fires: @addCitiesClicked
  */
 
 // IDEA: Table pagination; (future problem, for MVP, filter + download to excel).
-@customElement('peginnov-table')
+@customElement('peginnov-weather-table')
 export class Table extends LitElement {
   @property({ type: Array }) weatherInfo!: WeatherInfo[];
 
@@ -20,11 +20,10 @@ export class Table extends LitElement {
   // @property({ type: Array }) selectedRows: WeatherInfo[] = [];
 
   static styles = css`
-    .container {
+    .weather-table {
       margin: 20px;
       display: flex;
-      justify-content: center;
-      align-items: center;
+      flex-direction: column;
     }
 
     cds-table {
@@ -72,15 +71,12 @@ export class Table extends LitElement {
   // FUTURE: Allow users to copy "deep links" of their search results vs. constantly needing to download and send excels
   render() {
     return html`
-      <div class="container">
+      <div class="weather-table">
         <cds-table is-sortable>
-          <cds-table-header-title slot="title"
-            >PEG Brain: Weather Finder</cds-table-header-title
-          >
           ${this.toolBar} ${this.tableHead} ${this.tableBody}
         </cds-table>
+        ${this.noContent}
       </div>
-      ${this.noContent}
     `;
   }
 
@@ -89,7 +85,9 @@ export class Table extends LitElement {
       return nothing;
     }
 
-    return html`<p class="no-content"> No Weather Data. Start you search by Clicking 'Find Weather'</p>`;
+    return html`<p class="no-content">
+      No Weather Data. Start you search by selecting a location.
+    </p>`;
   }
 
   private get toolBar() {
@@ -99,7 +97,7 @@ export class Table extends LitElement {
           placeholder="Filter on any attribute from any column"
         ></cds-table-toolbar-search>
       </cds-table-toolbar-content>
-      <cds-button @click=${this.findWeatherClick}>Find Weather</cds-button>
+      <cds-button @click=${this.addCities}>Add Cities</cds-button>
       ${this.downloadCsvOption}
     </cds-table-toolbar>`;
   }
@@ -110,16 +108,17 @@ export class Table extends LitElement {
       return nothing;
     }
 
-    return html`<cds-button @click=${this.handleDownload}> Download CSV </cds-button>`;
+    return html`<cds-button @click=${this.handleDownload}>
+      Download CSV
+    </cds-button>`;
   }
-
 
   private get tableHead() {
     return html`
       <cds-table-head>
         <cds-table-header-row>
           ${[
-            'Weather At',
+            'Weather At (Your Local Time)',
             'Location',
             'Latitude & Longitutde',
             'Temperature (°F)',
@@ -175,17 +174,22 @@ export class Table extends LitElement {
 
   // IDEA: Future state: show in modal instead of new window. Add "copy to clipboard capability".
   private showRawApiResponse(item: WeatherInfo) {
-    const rawApiResponseWindow = window.open('', '_blank', 'width=600,height=400');
+    const rawApiResponseWindow = window.open(
+      '',
+      '_blank',
+      'width=600,height=400'
+    );
     rawApiResponseWindow?.document.write(
       `<pre>${JSON.stringify(item.raw_api_response, null, 2)}</pre>`
     );
   }
 
+  // FUTURE: allow users to select custom headers etc
   handleDownload() {
     downloadWeatherInfo(this.weatherInfo);
   }
 
-  findWeatherClick() {
-    this.dispatchEvent(new CustomEvent('findWeatherClicked'));
+  addCities() {
+    this.dispatchEvent(new CustomEvent('addCitiesClicked'));
   }
 }

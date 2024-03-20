@@ -9,7 +9,8 @@ export default {
     'peginnov-app': 'src/peginnov-app.ts',
     'peginnov-navigation': 'src/components/navigation.ts',
     'peginnov-form': 'src/components/form.ts',
-    'peginnov-table': 'src/components/table.ts',
+    'peginnov-weather-table': 'src/components/weather-table.ts',
+    'peginnov-city-display': 'src/components/city-display.ts',
   },
   output: {
     dir: 'dist',

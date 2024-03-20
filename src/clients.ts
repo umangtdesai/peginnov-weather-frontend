@@ -8,43 +8,10 @@ import { WeatherInfo, City, CityId } from './models';
 // const BASE_WEATHER_PROVIDER_URL = process.env.BASE_WEATHER_PROVIDER_URL;
 const BASE_WEATHER_PROVIDER_URL = 'http://127.0.0.1:8000';
 
-// all of these methods follow a very similar pattern. We could abstract away the fetch and error handling
-export const createWeatherData = async (
-  cityIds: number[],
-  timestamp?: Date
-): Promise<WeatherInfo[]> => {
+// FUTURE: enum historic vs current
+export const fetchWeatherData = async (type: string): Promise<WeatherInfo[]> => {
   try {
-    const params = new URLSearchParams();
-    if (timestamp) {
-      params.append('timestamp', timestamp.toISOString());
-    }
-    cityIds.forEach(id => params.append('city_ids', id.toString()));
-
-    const response = await fetch(
-      `${BASE_WEATHER_PROVIDER_URL}/weather?${params}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error('Failed to create weather data');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error fetching weather data:', error);
-  }
-
-  return [];
-};
-
-export const fetchWeatherData = async (): Promise<WeatherInfo[]> => {
-  try {
-    const response = await fetch(`${BASE_WEATHER_PROVIDER_URL}/weather`);
+    const response = await fetch(`${BASE_WEATHER_PROVIDER_URL}/weather/${type}`);
     if (!response.ok) {
       throw new Error('Failed to fetch weather info');
     }
@@ -72,6 +39,35 @@ export const searchCity = async (city: string): Promise<City[]> => {
     return [];
   }
 };
+
+export const getCities = async (): Promise<City[]> => {
+
+  try {
+    const response = await fetch(`${BASE_WEATHER_PROVIDER_URL}/cities`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch cities');
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching cities:', error);
+    throw [];
+  }
+}
+
+export const deleteCity = async (cityId: number): Promise<void> => {
+  try {
+    const response = await fetch(`${BASE_WEATHER_PROVIDER_URL}/cities/${cityId}`, {
+      method: 'DELETE',
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Failed to delete city with ID ${cityId}`);
+    }
+  } catch (error) {
+    console.error('Error deleting city:', error);
+    throw error;
+  }
+}
 
 export const createCity = async (city: City): Promise<CityId> => {
   try {
